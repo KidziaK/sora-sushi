@@ -7,6 +7,14 @@
 <html>
 	<head>
 		<title>Eventually by HTML5 UP</title>
+		<script>
+			document.addEventListener("DOMContentLoaded", (event) => {
+				document.getElementById("signup-form").addEventListener("submit", function (e) {
+					e.preventDefault(); // Cancel the default action
+					submitForm();
+				});
+			});
+		</script>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="{{ url_for('static', path='css/main.css') }}"/>
@@ -40,6 +48,15 @@
 
 		<!-- Scripts -->
 			<script src="{{ url_for('static', path='js/main.js') }}"></script>
+			<script>         
+				function submitForm() {
+				   var formElement = document.getElementById('signup-form');
+				   fetch('/', {
+						   method: 'POST',
+						   body: {},
+					   });
+					}
+			 </script>
 
 	</body>
 </html>

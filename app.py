@@ -36,7 +36,7 @@ def reset_shushi_count():
     sushi_count = 0
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(send_sms, 'cron', day_of_week='tue,thu', hour=10, minute=0)
+scheduler.add_job(send_sms, 'cron', day_of_week='tue,thu', hour=8, minute=30)
 scheduler.add_job(reset_shushi_count, 'cron', day_of_week='mon,wed', hour=23, minute=59)
 scheduler.start()
 

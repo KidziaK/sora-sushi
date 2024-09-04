@@ -28,16 +28,26 @@ def send_sms():
     client.messages.create(
         to=TO_PHONE_NUMBER,
         from_=TWILIO_PHONE_NUMBER,
-        body=f"Dzień dobry, z tej strony Sky Engine. Na sushi od nas jest: {sushi_count} chętnych.\nPozdrawiam."
+        body=f"Chętnych na sushi: {sushi_count}"
     )
 
-def reset_shushi_count():
+def _reset_sushi_count():
     global sushi_count
     sushi_count = 0
 
+@app.get("/count")
+def shushi_count():
+    global sushi_count
+    return {"sushi_count": sushi_count}
+
+@app.get("/reset")
+def reset_shushi_count():
+    _reset_sushi_count()
+    return {"sushi_count": sushi_count}
+
 scheduler = BackgroundScheduler()
-scheduler.add_job(send_sms, 'cron', day_of_week='tue,thu', hour=8, minute=30)
-scheduler.add_job(reset_shushi_count, 'cron', day_of_week='mon,wed', hour=23, minute=59)
+scheduler.add_job(send_sms, 'cron', day_of_week='tue,thu', hour=10, minute=30) 
+scheduler.add_job(_reset_sushi_count, 'cron', day_of_week='mon,wed', hour=23, minute=59)
 scheduler.start()
 
 @app.on_event("shutdown")
@@ -48,6 +58,7 @@ def shutdown_event():
 async def incerement_sushi_count(request: Request):
     global sushi_count
     sushi_count += 1
+    print(sushi_count)
 
 @app.get('/')
 async def hello_world(request: Request):
